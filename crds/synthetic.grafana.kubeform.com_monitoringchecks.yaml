@@ -1,0 +1,849 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: grafana.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: monitoringchecks.synthetic.grafana.kubeform.com
+spec:
+  group: synthetic.grafana.kubeform.com
+  names:
+    kind: MonitoringCheck
+    listKind: MonitoringCheckList
+    plural: monitoringchecks
+    singular: monitoringcheck
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  ID:
+                    description: The ID of the check.
+                    type: string
+                  alertSensitivity:
+                    description: Can be set to `none`, `low`, `medium`, or `high`
+                      to correspond to the check [alert levels](https://grafana.com/docs/grafana-cloud/synthetic-monitoring/synthetic-monitoring-alerting/).
+                    type: string
+                  basicMetricsOnly:
+                    description: Metrics are reduced by default. Set this to `false`
+                      if you'd like to publish all metrics. We maintain a [full list
+                      of metrics](https://github.com/grafana/synthetic-monitoring-agent/tree/main/internal/scraper/testdata)
+                      collected for each.
+                    type: boolean
+                  enabled:
+                    description: Whether to enable the check.
+                    type: boolean
+                  frequency:
+                    description: How often the check runs in milliseconds (the value
+                      is not truly a "frequency" but a "period"). The minimum acceptable
+                      value is 1 second (1000 ms), and the maximum is 120 seconds
+                      (120000 ms).
+                    format: int64
+                    type: integer
+                  job:
+                    description: Name used for job label.
+                    type: string
+                  labels:
+                    additionalProperties:
+                      type: string
+                    description: Custom labels to be included with collected metrics
+                      and logs. The maximum number of labels that can be specified
+                      per check is 5. These are applied, along with the probe-specific
+                      labels, to the outgoing metrics. The names and values of the
+                      labels cannot be empty, and the maximum length is 32 bytes.
+                    type: object
+                  probes:
+                    description: List of probe location IDs where this target will
+                      be checked from.
+                    items:
+                      format: int64
+                      type: integer
+                    type: array
+                  settings:
+                    description: Check settings.
+                    properties:
+                      dns:
+                        description: Settings for DNS check. The target must be a
+                          valid hostname (or IP address for `PTR` records).
+                        properties:
+                          ipVersion:
+                            description: Options are `V4`, `V6`, `Any`. Specifies
+                              whether the corresponding check will be performed using
+                              IPv4 or IPv6. The `Any` value indicates that IPv6 should
+                              be used, falling back to IPv4 if that's not available.
+                            type: string
+                          port:
+                            description: Port to target.
+                            format: int64
+                            type: integer
+                          protocol:
+                            description: '`TCP` or `UDP`.'
+                            type: string
+                          recordType:
+                            description: One of `ANY`, `A`, `AAAA`, `CNAME`, `MX`,
+                              `NS`, `PTR`, `SOA`, `SRV`, `TXT`.
+                            type: string
+                          server:
+                            description: DNS server address to target.
+                            type: string
+                          sourceIPAddress:
+                            description: Source IP address.
+                            type: string
+                          validRCodes:
+                            description: List of valid response codes. Options include
+                              `NOERROR`, `BADALG`, `BADMODE`, `BADKEY`, `BADCOOKIE`,
+                              `BADNAME`, `BADSIG`, `BADTIME`, `BADTRUNC`, `BADVERS`,
+                              `FORMERR`, `NOTIMP`, `NOTAUTH`, `NOTZONE`, `NXDOMAIN`,
+                              `NXRRSET`, `REFUSED`, `SERVFAIL`, `YXDOMAIN`, `YXRRSET`.
+                            items:
+                              type: string
+                            type: array
+                          validateAdditionalRrs:
+                            description: Validate additional matches.
+                            items:
+                              properties:
+                                failIfMatchesRegexp:
+                                  description: Fail if value matches regex.
+                                  items:
+                                    type: string
+                                  type: array
+                                failIfNotMatchesRegexp:
+                                  description: Fail if value does not match regex.
+                                  items:
+                                    type: string
+                                  type: array
+                              type: object
+                            type: array
+                          validateAnswerRrs:
+                            description: Validate response answer.
+                            properties:
+                              failIfMatchesRegexp:
+                                description: Fail if value matches regex.
+                                items:
+                                  type: string
+                                type: array
+                              failIfNotMatchesRegexp:
+                                description: Fail if value does not match regex.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          validateAuthorityRrs:
+                            description: Validate response authority.
+                            properties:
+                              failIfMatchesRegexp:
+                                description: Fail if value matches regex.
+                                items:
+                                  type: string
+                                type: array
+                              failIfNotMatchesRegexp:
+                                description: Fail if value does not match regex.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                        type: object
+                      http:
+                        description: Settings for HTTP check. The target must be a
+                          URL (http or https).
+                        properties:
+                          basicAuth:
+                            description: Basic auth settings.
+                            properties:
+                              password:
+                                description: Basic auth password.
+                                type: string
+                              username:
+                                description: Basic auth username.
+                                type: string
+                            required:
+                            - password
+                            - username
+                            type: object
+                          bearerToken:
+                            description: Token for use with bearer authorization header.
+                            type: string
+                          body:
+                            description: The body of the HTTP request used in probe.
+                            type: string
+                          cacheBustingQueryParamName:
+                            description: The name of the query parameter used to prevent
+                              the server from using a cached response. Each probe
+                              will assign a random value to this parameter each time
+                              a request is made.
+                            type: string
+                          failIfBodyMatchesRegexp:
+                            description: List of regexes. If any match the response
+                              body, the check will fail.
+                            items:
+                              type: string
+                            type: array
+                          failIfBodyNotMatchesRegexp:
+                            description: List of regexes. If any do not match the
+                              response body, the check will fail.
+                            items:
+                              type: string
+                            type: array
+                          failIfHeaderMatchesRegexp:
+                            description: Check fails if headers match.
+                            items:
+                              properties:
+                                allowMissing:
+                                  description: Allow header to be missing from responses.
+                                  type: boolean
+                                header:
+                                  description: Header name.
+                                  type: string
+                                regexp:
+                                  description: Regex that header value should match.
+                                  type: string
+                              required:
+                              - header
+                              - regexp
+                              type: object
+                            type: array
+                          failIfHeaderNotMatchesRegexp:
+                            description: Check fails if headers do not match.
+                            items:
+                              properties:
+                                allowMissing:
+                                  description: Allow header to be missing from responses.
+                                  type: boolean
+                                header:
+                                  description: Header name.
+                                  type: string
+                                regexp:
+                                  description: Regex that header value should match.
+                                  type: string
+                              required:
+                              - header
+                              - regexp
+                              type: object
+                            type: array
+                          failIfNotSsl:
+                            description: Fail if SSL is not present.
+                            type: boolean
+                          failIfSsl:
+                            description: Fail if SSL is present.
+                            type: boolean
+                          headers:
+                            description: The HTTP headers set for the probe.
+                            items:
+                              type: string
+                            type: array
+                          ipVersion:
+                            description: Options are `V4`, `V6`, `Any`. Specifies
+                              whether the corresponding check will be performed using
+                              IPv4 or IPv6. The `Any` value indicates that IPv6 should
+                              be used, falling back to IPv4 if that's not available.
+                            type: string
+                          method:
+                            description: Request method. One of `GET`, `CONNECT`,
+                              `DELETE`, `HEAD`, `OPTIONS`, `POST`, `PUT`, `TRACE`
+                            type: string
+                          noFollowRedirects:
+                            description: Do not follow redirects.
+                            type: boolean
+                          proxyURL:
+                            description: Proxy URL.
+                            type: string
+                          tlsConfig:
+                            description: TLS config.
+                            properties:
+                              caCert:
+                                description: CA certificate in PEM format.
+                                type: string
+                              clientCert:
+                                description: Client certificate in PEM format.
+                                type: string
+                              insecureSkipVerify:
+                                description: Disable target certificate validation.
+                                type: boolean
+                              serverName:
+                                description: Used to verify the hostname for the targets.
+                                type: string
+                            type: object
+                          validHTTPVersions:
+                            description: List of valid HTTP versions. Options include
+                              `HTTP/1.0`, `HTTP/1.1`, `HTTP/2`
+                            items:
+                              type: string
+                            type: array
+                          validStatusCodes:
+                            description: Accepted status codes. If unset, defaults
+                              to 2xx.
+                            items:
+                              format: int64
+                              type: integer
+                            type: array
+                        type: object
+                      ping:
+                        description: Settings for ping (ICMP) check. The target must
+                          be a valid hostname or IP address.
+                        properties:
+                          dontFragment:
+                            description: Set the DF-bit in the IP-header. Only works
+                              with ipV4.
+                            type: boolean
+                          ipVersion:
+                            description: Options are `V4`, `V6`, `Any`. Specifies
+                              whether the corresponding check will be performed using
+                              IPv4 or IPv6. The `Any` value indicates that IPv6 should
+                              be used, falling back to IPv4 if that's not available.
+                            type: string
+                          payloadSize:
+                            description: Payload size.
+                            format: int64
+                            type: integer
+                          sourceIPAddress:
+                            description: Source IP address.
+                            type: string
+                        type: object
+                      tcp:
+                        description: Settings for TCP check. The target must be of
+                          the form `<host>:<port>`, where the host portion must be
+                          a valid hostname or IP address.
+                        properties:
+                          ipVersion:
+                            description: Options are `V4`, `V6`, `Any`. Specifies
+                              whether the corresponding check will be performed using
+                              IPv4 or IPv6. The `Any` value indicates that IPv6 should
+                              be used, falling back to IPv4 if that's not available.
+                            type: string
+                          queryResponse:
+                            description: The query sent in the TCP probe and the expected
+                              associated response.
+                            items:
+                              properties:
+                                expect:
+                                  description: Response to expect.
+                                  type: string
+                                send:
+                                  description: Data to send.
+                                  type: string
+                                startTls:
+                                  description: Upgrade TCP connection to TLS.
+                                  type: boolean
+                              required:
+                              - expect
+                              - send
+                              type: object
+                            type: array
+                          sourceIPAddress:
+                            description: Source IP address.
+                            type: string
+                          tls:
+                            description: Whether or not TLS is used when the connection
+                              is initiated.
+                            type: boolean
+                          tlsConfig:
+                            description: TLS config.
+                            properties:
+                              caCert:
+                                description: CA certificate in PEM format.
+                                type: string
+                              clientCert:
+                                description: Client certificate in PEM format.
+                                type: string
+                              insecureSkipVerify:
+                                description: Disable target certificate validation.
+                                type: boolean
+                              serverName:
+                                description: Used to verify the hostname for the targets.
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  target:
+                    description: Hostname to ping.
+                    type: string
+                  tenantID:
+                    description: The tenant ID of the check.
+                    format: int64
+                    type: integer
+                  timeout:
+                    description: Specifies the maximum running time for the check
+                      in milliseconds. The minimum acceptable value is 1 second (1000
+                      ms), and the maximum 10 seconds (10000 ms).
+                    format: int64
+                    type: integer
+                required:
+                - job
+                - probes
+                - settings
+                - target
+                type: object
+              secretRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              state:
+                properties:
+                  ID:
+                    description: The ID of the check.
+                    type: string
+                  alertSensitivity:
+                    description: Can be set to `none`, `low`, `medium`, or `high`
+                      to correspond to the check [alert levels](https://grafana.com/docs/grafana-cloud/synthetic-monitoring/synthetic-monitoring-alerting/).
+                    type: string
+                  basicMetricsOnly:
+                    description: Metrics are reduced by default. Set this to `false`
+                      if you'd like to publish all metrics. We maintain a [full list
+                      of metrics](https://github.com/grafana/synthetic-monitoring-agent/tree/main/internal/scraper/testdata)
+                      collected for each.
+                    type: boolean
+                  enabled:
+                    description: Whether to enable the check.
+                    type: boolean
+                  frequency:
+                    description: How often the check runs in milliseconds (the value
+                      is not truly a "frequency" but a "period"). The minimum acceptable
+                      value is 1 second (1000 ms), and the maximum is 120 seconds
+                      (120000 ms).
+                    format: int64
+                    type: integer
+                  job:
+                    description: Name used for job label.
+                    type: string
+                  labels:
+                    additionalProperties:
+                      type: string
+                    description: Custom labels to be included with collected metrics
+                      and logs. The maximum number of labels that can be specified
+                      per check is 5. These are applied, along with the probe-specific
+                      labels, to the outgoing metrics. The names and values of the
+                      labels cannot be empty, and the maximum length is 32 bytes.
+                    type: object
+                  probes:
+                    description: List of probe location IDs where this target will
+                      be checked from.
+                    items:
+                      format: int64
+                      type: integer
+                    type: array
+                  settings:
+                    description: Check settings.
+                    properties:
+                      dns:
+                        description: Settings for DNS check. The target must be a
+                          valid hostname (or IP address for `PTR` records).
+                        properties:
+                          ipVersion:
+                            description: Options are `V4`, `V6`, `Any`. Specifies
+                              whether the corresponding check will be performed using
+                              IPv4 or IPv6. The `Any` value indicates that IPv6 should
+                              be used, falling back to IPv4 if that's not available.
+                            type: string
+                          port:
+                            description: Port to target.
+                            format: int64
+                            type: integer
+                          protocol:
+                            description: '`TCP` or `UDP`.'
+                            type: string
+                          recordType:
+                            description: One of `ANY`, `A`, `AAAA`, `CNAME`, `MX`,
+                              `NS`, `PTR`, `SOA`, `SRV`, `TXT`.
+                            type: string
+                          server:
+                            description: DNS server address to target.
+                            type: string
+                          sourceIPAddress:
+                            description: Source IP address.
+                            type: string
+                          validRCodes:
+                            description: List of valid response codes. Options include
+                              `NOERROR`, `BADALG`, `BADMODE`, `BADKEY`, `BADCOOKIE`,
+                              `BADNAME`, `BADSIG`, `BADTIME`, `BADTRUNC`, `BADVERS`,
+                              `FORMERR`, `NOTIMP`, `NOTAUTH`, `NOTZONE`, `NXDOMAIN`,
+                              `NXRRSET`, `REFUSED`, `SERVFAIL`, `YXDOMAIN`, `YXRRSET`.
+                            items:
+                              type: string
+                            type: array
+                          validateAdditionalRrs:
+                            description: Validate additional matches.
+                            items:
+                              properties:
+                                failIfMatchesRegexp:
+                                  description: Fail if value matches regex.
+                                  items:
+                                    type: string
+                                  type: array
+                                failIfNotMatchesRegexp:
+                                  description: Fail if value does not match regex.
+                                  items:
+                                    type: string
+                                  type: array
+                              type: object
+                            type: array
+                          validateAnswerRrs:
+                            description: Validate response answer.
+                            properties:
+                              failIfMatchesRegexp:
+                                description: Fail if value matches regex.
+                                items:
+                                  type: string
+                                type: array
+                              failIfNotMatchesRegexp:
+                                description: Fail if value does not match regex.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                          validateAuthorityRrs:
+                            description: Validate response authority.
+                            properties:
+                              failIfMatchesRegexp:
+                                description: Fail if value matches regex.
+                                items:
+                                  type: string
+                                type: array
+                              failIfNotMatchesRegexp:
+                                description: Fail if value does not match regex.
+                                items:
+                                  type: string
+                                type: array
+                            type: object
+                        type: object
+                      http:
+                        description: Settings for HTTP check. The target must be a
+                          URL (http or https).
+                        properties:
+                          basicAuth:
+                            description: Basic auth settings.
+                            properties:
+                              password:
+                                description: Basic auth password.
+                                type: string
+                              username:
+                                description: Basic auth username.
+                                type: string
+                            required:
+                            - password
+                            - username
+                            type: object
+                          bearerToken:
+                            description: Token for use with bearer authorization header.
+                            type: string
+                          body:
+                            description: The body of the HTTP request used in probe.
+                            type: string
+                          cacheBustingQueryParamName:
+                            description: The name of the query parameter used to prevent
+                              the server from using a cached response. Each probe
+                              will assign a random value to this parameter each time
+                              a request is made.
+                            type: string
+                          failIfBodyMatchesRegexp:
+                            description: List of regexes. If any match the response
+                              body, the check will fail.
+                            items:
+                              type: string
+                            type: array
+                          failIfBodyNotMatchesRegexp:
+                            description: List of regexes. If any do not match the
+                              response body, the check will fail.
+                            items:
+                              type: string
+                            type: array
+                          failIfHeaderMatchesRegexp:
+                            description: Check fails if headers match.
+                            items:
+                              properties:
+                                allowMissing:
+                                  description: Allow header to be missing from responses.
+                                  type: boolean
+                                header:
+                                  description: Header name.
+                                  type: string
+                                regexp:
+                                  description: Regex that header value should match.
+                                  type: string
+                              required:
+                              - header
+                              - regexp
+                              type: object
+                            type: array
+                          failIfHeaderNotMatchesRegexp:
+                            description: Check fails if headers do not match.
+                            items:
+                              properties:
+                                allowMissing:
+                                  description: Allow header to be missing from responses.
+                                  type: boolean
+                                header:
+                                  description: Header name.
+                                  type: string
+                                regexp:
+                                  description: Regex that header value should match.
+                                  type: string
+                              required:
+                              - header
+                              - regexp
+                              type: object
+                            type: array
+                          failIfNotSsl:
+                            description: Fail if SSL is not present.
+                            type: boolean
+                          failIfSsl:
+                            description: Fail if SSL is present.
+                            type: boolean
+                          headers:
+                            description: The HTTP headers set for the probe.
+                            items:
+                              type: string
+                            type: array
+                          ipVersion:
+                            description: Options are `V4`, `V6`, `Any`. Specifies
+                              whether the corresponding check will be performed using
+                              IPv4 or IPv6. The `Any` value indicates that IPv6 should
+                              be used, falling back to IPv4 if that's not available.
+                            type: string
+                          method:
+                            description: Request method. One of `GET`, `CONNECT`,
+                              `DELETE`, `HEAD`, `OPTIONS`, `POST`, `PUT`, `TRACE`
+                            type: string
+                          noFollowRedirects:
+                            description: Do not follow redirects.
+                            type: boolean
+                          proxyURL:
+                            description: Proxy URL.
+                            type: string
+                          tlsConfig:
+                            description: TLS config.
+                            properties:
+                              caCert:
+                                description: CA certificate in PEM format.
+                                type: string
+                              clientCert:
+                                description: Client certificate in PEM format.
+                                type: string
+                              insecureSkipVerify:
+                                description: Disable target certificate validation.
+                                type: boolean
+                              serverName:
+                                description: Used to verify the hostname for the targets.
+                                type: string
+                            type: object
+                          validHTTPVersions:
+                            description: List of valid HTTP versions. Options include
+                              `HTTP/1.0`, `HTTP/1.1`, `HTTP/2`
+                            items:
+                              type: string
+                            type: array
+                          validStatusCodes:
+                            description: Accepted status codes. If unset, defaults
+                              to 2xx.
+                            items:
+                              format: int64
+                              type: integer
+                            type: array
+                        type: object
+                      ping:
+                        description: Settings for ping (ICMP) check. The target must
+                          be a valid hostname or IP address.
+                        properties:
+                          dontFragment:
+                            description: Set the DF-bit in the IP-header. Only works
+                              with ipV4.
+                            type: boolean
+                          ipVersion:
+                            description: Options are `V4`, `V6`, `Any`. Specifies
+                              whether the corresponding check will be performed using
+                              IPv4 or IPv6. The `Any` value indicates that IPv6 should
+                              be used, falling back to IPv4 if that's not available.
+                            type: string
+                          payloadSize:
+                            description: Payload size.
+                            format: int64
+                            type: integer
+                          sourceIPAddress:
+                            description: Source IP address.
+                            type: string
+                        type: object
+                      tcp:
+                        description: Settings for TCP check. The target must be of
+                          the form `<host>:<port>`, where the host portion must be
+                          a valid hostname or IP address.
+                        properties:
+                          ipVersion:
+                            description: Options are `V4`, `V6`, `Any`. Specifies
+                              whether the corresponding check will be performed using
+                              IPv4 or IPv6. The `Any` value indicates that IPv6 should
+                              be used, falling back to IPv4 if that's not available.
+                            type: string
+                          queryResponse:
+                            description: The query sent in the TCP probe and the expected
+                              associated response.
+                            items:
+                              properties:
+                                expect:
+                                  description: Response to expect.
+                                  type: string
+                                send:
+                                  description: Data to send.
+                                  type: string
+                                startTls:
+                                  description: Upgrade TCP connection to TLS.
+                                  type: boolean
+                              required:
+                              - expect
+                              - send
+                              type: object
+                            type: array
+                          sourceIPAddress:
+                            description: Source IP address.
+                            type: string
+                          tls:
+                            description: Whether or not TLS is used when the connection
+                              is initiated.
+                            type: boolean
+                          tlsConfig:
+                            description: TLS config.
+                            properties:
+                              caCert:
+                                description: CA certificate in PEM format.
+                                type: string
+                              clientCert:
+                                description: Client certificate in PEM format.
+                                type: string
+                              insecureSkipVerify:
+                                description: Disable target certificate validation.
+                                type: boolean
+                              serverName:
+                                description: Used to verify the hostname for the targets.
+                                type: string
+                            type: object
+                        type: object
+                    type: object
+                  target:
+                    description: Hostname to ping.
+                    type: string
+                  tenantID:
+                    description: The tenant ID of the check.
+                    format: int64
+                    type: integer
+                  timeout:
+                    description: Specifies the maximum running time for the check
+                      in milliseconds. The minimum acceptable value is 1 second (1000
+                      ms), and the maximum 10 seconds (10000 ms).
+                    format: int64
+                    type: integer
+                required:
+                - job
+                - probes
+                - settings
+                - target
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
