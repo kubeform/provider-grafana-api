@@ -1,0 +1,527 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/name: grafana.kubeform.com
+    app.kubernetes.io/part-of: kubeform.com
+  name: sources.data.grafana.kubeform.com
+spec:
+  group: data.grafana.kubeform.com
+  names:
+    kind: Source
+    listKind: SourceList
+    plural: sources
+    singular: source
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .status.phase
+      name: Phase
+      type: string
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            properties:
+              providerRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              resource:
+                properties:
+                  accessMode:
+                    description: 'The method by which Grafana will access the data
+                      source: `proxy` or `direct`.'
+                    type: string
+                  basicAuthEnabled:
+                    description: Whether to enable basic auth for the data source.
+                    type: boolean
+                  basicAuthUsername:
+                    description: Basic auth username.
+                    type: string
+                  databaseName:
+                    description: (Required by some data source types) The name of
+                      the database to use on the selected data source server.
+                    type: string
+                  id:
+                    type: string
+                  isDefault:
+                    description: Whether to set the data source as default. This should
+                      only be `true` to a single data source.
+                    type: boolean
+                  jsonData:
+                    description: (Required by some data source types)
+                    items:
+                      properties:
+                        assumeRoleArn:
+                          description: (CloudWatch) The ARN of the role to be assumed
+                            by Grafana when using the CloudWatch data source.
+                          type: string
+                        authType:
+                          description: (CloudWatch) The authentication type used to
+                            access the data source.
+                          type: string
+                        authenticationType:
+                          description: '(Stackdriver) The authentication type: `jwt`
+                            or `gce`.'
+                          type: string
+                        clientEmail:
+                          description: (Stackdriver) Service account email address.
+                          type: string
+                        connMaxLifetime:
+                          description: (MySQL, PostgreSQL, and MSSQL) Maximum amount
+                            of time in seconds a connection may be reused (Grafana
+                            v5.4+).
+                          format: int64
+                          type: integer
+                        customMetricsNamespaces:
+                          description: (CloudWatch) A comma-separated list of custom
+                            namespaces to be queried by the CloudWatch data source.
+                          type: string
+                        defaultProject:
+                          description: (Stackdriver) The default project for the data
+                            source.
+                          type: string
+                        defaultRegion:
+                          description: (CloudWatch) The default region for the data
+                            source.
+                          type: string
+                        encrypt:
+                          description: '(MSSQL) Connection SSL encryption handling:
+                            ''disable'', ''false'' or ''true''.'
+                          type: string
+                        esVersion:
+                          description: (Elasticsearch) Elasticsearch version as a
+                            number (2/5/56/60/70).
+                          format: int64
+                          type: integer
+                        graphiteVersion:
+                          description: (Graphite) Graphite version.
+                          type: string
+                        httpMethod:
+                          description: (Prometheus) HTTP method to use for making
+                            requests.
+                          type: string
+                        interval:
+                          description: (Elasticsearch) Index date time format. nil(No
+                            Pattern), 'Hourly', 'Daily', 'Weekly', 'Monthly' or 'Yearly'.
+                          type: string
+                        logLevelField:
+                          description: (Elasticsearch) Which field should be used
+                            to indicate the priority of the log message.
+                          type: string
+                        logMessageField:
+                          description: (Elasticsearch) Which field should be used
+                            as the log message.
+                          type: string
+                        maxConcurrentShardRequests:
+                          description: (Elasticsearch) Maximum number of concurrent
+                            shard requests.
+                          format: int64
+                          type: integer
+                        maxIdleConns:
+                          description: (MySQL, PostgreSQL and MSSQL) Maximum number
+                            of connections in the idle connection pool (Grafana v5.4+).
+                          format: int64
+                          type: integer
+                        maxOpenConns:
+                          description: (MySQL, PostgreSQL and MSSQL) Maximum number
+                            of open connections to the database (Grafana v5.4+).
+                          format: int64
+                          type: integer
+                        postgresVersion:
+                          description: (PostgreSQL) Postgres version as a number (903/904/905/906/1000)
+                            meaning v9.3, v9.4, etc.
+                          format: int64
+                          type: integer
+                        profile:
+                          description: (CloudWatch) The credentials profile name to
+                            use when authentication type is set as 'Credentials file'.
+                          type: string
+                        queryTimeout:
+                          description: (Prometheus) Timeout for queries made to the
+                            Prometheus data source in seconds.
+                          type: string
+                        sigv4AssumeRoleArn:
+                          description: (Elasticsearch and Prometheus) Specifies the
+                            ARN of an IAM role to assume.
+                          type: string
+                        sigv4Auth:
+                          description: (Elasticsearch and Prometheus) Enable usage
+                            of SigV4.
+                          type: boolean
+                        sigv4AuthType:
+                          description: '(Elasticsearch and Prometheus) The Sigv4 authentication
+                            provider to use: ''default'', ''credentials'' or ''keys''
+                            (AMG: ''workspace-iam-role'').'
+                          type: string
+                        sigv4ExternalID:
+                          description: (Elasticsearch and Prometheus) When assuming
+                            a role in another account use this external ID.
+                          type: string
+                        sigv4Profile:
+                          description: (Elasticsearch and Prometheus) Credentials
+                            profile name, leave blank for default.
+                          type: string
+                        sigv4Region:
+                          description: (Elasticsearch and Prometheus) AWS region to
+                            use for Sigv4.
+                          type: string
+                        sslMode:
+                          description: (PostgreSQL) SSLmode. 'disable', 'require',
+                            'verify-ca' or 'verify-full'.
+                          type: string
+                        timeField:
+                          description: (Elasticsearch) Which field that should be
+                            used as timestamp.
+                          type: string
+                        timeInterval:
+                          description: (Prometheus, Elasticsearch, InfluxDB, MySQL,
+                            PostgreSQL, and MSSQL) Lowest interval/step value that
+                            should be used for this data source.
+                          type: string
+                        timescaledb:
+                          description: (PostgreSQL) Enable usage of TimescaleDB extension.
+                          type: boolean
+                        tlsAuth:
+                          description: (All) Enable TLS authentication using client
+                            cert configured in secure json data.
+                          type: boolean
+                        tlsAuthWithCaCert:
+                          description: (All) Enable TLS authentication using CA cert.
+                          type: boolean
+                        tlsSkipVerify:
+                          description: (All) Controls whether a client verifies the
+                            server’s certificate chain and host name.
+                          type: boolean
+                        tokenURI:
+                          description: (Stackdriver) The token URI used, provided
+                            in the service account key.
+                          type: string
+                        tsdbResolution:
+                          description: (OpenTSDB) Resolution.
+                          type: string
+                        tsdbVersion:
+                          description: (OpenTSDB) Version.
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: A unique name for the data source.
+                    type: string
+                  type:
+                    description: The data source type. Must be one of the supported
+                      data source keywords.
+                    type: string
+                  url:
+                    description: The URL for the data source. The type of URL required
+                      varies depending on the chosen data source type.
+                    type: string
+                  username:
+                    description: (Required by some data source types) The username
+                      to use to authenticate to the data source.
+                    type: string
+                required:
+                - name
+                type: object
+              secretRef:
+                description: LocalObjectReference contains enough information to let
+                  you locate the referenced object inside the same namespace.
+                properties:
+                  name:
+                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                      TODO: Add other useful fields. apiVersion, kind, uid?'
+                    type: string
+                type: object
+              state:
+                properties:
+                  accessMode:
+                    description: 'The method by which Grafana will access the data
+                      source: `proxy` or `direct`.'
+                    type: string
+                  basicAuthEnabled:
+                    description: Whether to enable basic auth for the data source.
+                    type: boolean
+                  basicAuthUsername:
+                    description: Basic auth username.
+                    type: string
+                  databaseName:
+                    description: (Required by some data source types) The name of
+                      the database to use on the selected data source server.
+                    type: string
+                  id:
+                    type: string
+                  isDefault:
+                    description: Whether to set the data source as default. This should
+                      only be `true` to a single data source.
+                    type: boolean
+                  jsonData:
+                    description: (Required by some data source types)
+                    items:
+                      properties:
+                        assumeRoleArn:
+                          description: (CloudWatch) The ARN of the role to be assumed
+                            by Grafana when using the CloudWatch data source.
+                          type: string
+                        authType:
+                          description: (CloudWatch) The authentication type used to
+                            access the data source.
+                          type: string
+                        authenticationType:
+                          description: '(Stackdriver) The authentication type: `jwt`
+                            or `gce`.'
+                          type: string
+                        clientEmail:
+                          description: (Stackdriver) Service account email address.
+                          type: string
+                        connMaxLifetime:
+                          description: (MySQL, PostgreSQL, and MSSQL) Maximum amount
+                            of time in seconds a connection may be reused (Grafana
+                            v5.4+).
+                          format: int64
+                          type: integer
+                        customMetricsNamespaces:
+                          description: (CloudWatch) A comma-separated list of custom
+                            namespaces to be queried by the CloudWatch data source.
+                          type: string
+                        defaultProject:
+                          description: (Stackdriver) The default project for the data
+                            source.
+                          type: string
+                        defaultRegion:
+                          description: (CloudWatch) The default region for the data
+                            source.
+                          type: string
+                        encrypt:
+                          description: '(MSSQL) Connection SSL encryption handling:
+                            ''disable'', ''false'' or ''true''.'
+                          type: string
+                        esVersion:
+                          description: (Elasticsearch) Elasticsearch version as a
+                            number (2/5/56/60/70).
+                          format: int64
+                          type: integer
+                        graphiteVersion:
+                          description: (Graphite) Graphite version.
+                          type: string
+                        httpMethod:
+                          description: (Prometheus) HTTP method to use for making
+                            requests.
+                          type: string
+                        interval:
+                          description: (Elasticsearch) Index date time format. nil(No
+                            Pattern), 'Hourly', 'Daily', 'Weekly', 'Monthly' or 'Yearly'.
+                          type: string
+                        logLevelField:
+                          description: (Elasticsearch) Which field should be used
+                            to indicate the priority of the log message.
+                          type: string
+                        logMessageField:
+                          description: (Elasticsearch) Which field should be used
+                            as the log message.
+                          type: string
+                        maxConcurrentShardRequests:
+                          description: (Elasticsearch) Maximum number of concurrent
+                            shard requests.
+                          format: int64
+                          type: integer
+                        maxIdleConns:
+                          description: (MySQL, PostgreSQL and MSSQL) Maximum number
+                            of connections in the idle connection pool (Grafana v5.4+).
+                          format: int64
+                          type: integer
+                        maxOpenConns:
+                          description: (MySQL, PostgreSQL and MSSQL) Maximum number
+                            of open connections to the database (Grafana v5.4+).
+                          format: int64
+                          type: integer
+                        postgresVersion:
+                          description: (PostgreSQL) Postgres version as a number (903/904/905/906/1000)
+                            meaning v9.3, v9.4, etc.
+                          format: int64
+                          type: integer
+                        profile:
+                          description: (CloudWatch) The credentials profile name to
+                            use when authentication type is set as 'Credentials file'.
+                          type: string
+                        queryTimeout:
+                          description: (Prometheus) Timeout for queries made to the
+                            Prometheus data source in seconds.
+                          type: string
+                        sigv4AssumeRoleArn:
+                          description: (Elasticsearch and Prometheus) Specifies the
+                            ARN of an IAM role to assume.
+                          type: string
+                        sigv4Auth:
+                          description: (Elasticsearch and Prometheus) Enable usage
+                            of SigV4.
+                          type: boolean
+                        sigv4AuthType:
+                          description: '(Elasticsearch and Prometheus) The Sigv4 authentication
+                            provider to use: ''default'', ''credentials'' or ''keys''
+                            (AMG: ''workspace-iam-role'').'
+                          type: string
+                        sigv4ExternalID:
+                          description: (Elasticsearch and Prometheus) When assuming
+                            a role in another account use this external ID.
+                          type: string
+                        sigv4Profile:
+                          description: (Elasticsearch and Prometheus) Credentials
+                            profile name, leave blank for default.
+                          type: string
+                        sigv4Region:
+                          description: (Elasticsearch and Prometheus) AWS region to
+                            use for Sigv4.
+                          type: string
+                        sslMode:
+                          description: (PostgreSQL) SSLmode. 'disable', 'require',
+                            'verify-ca' or 'verify-full'.
+                          type: string
+                        timeField:
+                          description: (Elasticsearch) Which field that should be
+                            used as timestamp.
+                          type: string
+                        timeInterval:
+                          description: (Prometheus, Elasticsearch, InfluxDB, MySQL,
+                            PostgreSQL, and MSSQL) Lowest interval/step value that
+                            should be used for this data source.
+                          type: string
+                        timescaledb:
+                          description: (PostgreSQL) Enable usage of TimescaleDB extension.
+                          type: boolean
+                        tlsAuth:
+                          description: (All) Enable TLS authentication using client
+                            cert configured in secure json data.
+                          type: boolean
+                        tlsAuthWithCaCert:
+                          description: (All) Enable TLS authentication using CA cert.
+                          type: boolean
+                        tlsSkipVerify:
+                          description: (All) Controls whether a client verifies the
+                            server’s certificate chain and host name.
+                          type: boolean
+                        tokenURI:
+                          description: (Stackdriver) The token URI used, provided
+                            in the service account key.
+                          type: string
+                        tsdbResolution:
+                          description: (OpenTSDB) Resolution.
+                          type: string
+                        tsdbVersion:
+                          description: (OpenTSDB) Version.
+                          type: string
+                      type: object
+                    type: array
+                  name:
+                    description: A unique name for the data source.
+                    type: string
+                  type:
+                    description: The data source type. Must be one of the supported
+                      data source keywords.
+                    type: string
+                  url:
+                    description: The URL for the data source. The type of URL required
+                      varies depending on the chosen data source type.
+                    type: string
+                  username:
+                    description: (Required by some data source types) The username
+                      to use to authenticate to the data source.
+                    type: string
+                required:
+                - name
+                type: object
+              terminationPolicy:
+                enum:
+                - Delete
+                - DoNotTerminate
+                type: string
+              updatePolicy:
+                enum:
+                - Destroy
+                - DoNotDestroy
+                type: string
+            required:
+            - providerRef
+            - resource
+            type: object
+          status:
+            properties:
+              conditions:
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another. This should be when the underlying condition changed.  If
+                        that is not known, then using the time when the API field
+                        changed is acceptable.
+                      format: date-time
+                      type: string
+                    message:
+                      description: A human readable message indicating details about
+                        the transition. This field may be empty.
+                      type: string
+                    observedGeneration:
+                      description: If set, this represents the .metadata.generation
+                        that the condition was set based upon. For instance, if .metadata.generation
+                        is currently 12, but the .status.condition[x].observedGeneration
+                        is 9, the condition is out of date with respect to the current
+                        state of the instance.
+                      format: int64
+                      type: integer
+                    reason:
+                      description: The reason for the condition's last transition
+                        in CamelCase. The specific API may choose whether or not this
+                        field is considered a guaranteed API. This field may not be
+                        empty.
+                      type: string
+                    status:
+                      description: Status of the condition, one of True, False, Unknown.
+                      type: string
+                    type:
+                      description: Type of condition in CamelCase or in foo.example.com/CamelCase.
+                        Many .condition.type values are consistent across resources
+                        like Available, but because arbitrary conditions can be useful
+                        (see .node.status.conditions), the ability to deconflict is
+                        important.
+                      type: string
+                  required:
+                  - lastTransitionTime
+                  - message
+                  - reason
+                  - status
+                  - type
+                  type: object
+                type: array
+              observedGeneration:
+                description: Resource generation, which is updated on mutation by
+                  the API Server.
+                format: int64
+                type: integer
+              phase:
+                description: Status defines the set of statuses a resource can have.
+                type: string
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
