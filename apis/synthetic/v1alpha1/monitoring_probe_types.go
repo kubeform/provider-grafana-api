@@ -56,12 +56,11 @@ type MonitoringProbeSpec struct {
 }
 
 type MonitoringProbeSpecResource struct {
+	ID string `json:"id,omitempty" tf:"id,omitempty"`
+
 	// The probe authentication token. Your probe must use this to authenticate with Grafana Cloud.
 	// +optional
 	AuthToken *string `json:"-" sensitive:"true" tf:"auth_token"`
-	// The ID of the probe.
-	// +optional
-	ID *string `json:"ID,omitempty" tf:"id"`
 	// Custom labels to be included with collected metrics and logs.
 	// +optional
 	Labels *map[string]string `json:"labels,omitempty" tf:"labels"`

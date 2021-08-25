@@ -138,11 +138,6 @@ func (in *MonitoringCheckSpecResource) DeepCopyInto(out *MonitoringCheckSpecReso
 		*out = new(int64)
 		**out = **in
 	}
-	if in.ID != nil {
-		in, out := &in.ID, &out.ID
-		*out = new(string)
-		**out = **in
-	}
 	if in.Job != nil {
 		in, out := &in.Job, &out.Job
 		*out = new(string)
@@ -886,11 +881,6 @@ func (in *MonitoringProbeSpecResource) DeepCopyInto(out *MonitoringProbeSpecReso
 	*out = *in
 	if in.AuthToken != nil {
 		in, out := &in.AuthToken, &out.AuthToken
-		*out = new(string)
-		**out = **in
-	}
-	if in.ID != nil {
-		in, out := &in.ID, &out.ID
 		*out = new(string)
 		**out = **in
 	}

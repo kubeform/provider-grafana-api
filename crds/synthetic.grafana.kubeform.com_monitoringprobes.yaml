@@ -48,8 +48,7 @@ spec:
                 type: object
               resource:
                 properties:
-                  ID:
-                    description: The ID of the probe.
+                  id:
                     type: string
                   labels:
                     additionalProperties:
@@ -96,8 +95,7 @@ spec:
                 type: object
               state:
                 properties:
-                  ID:
-                    description: The ID of the probe.
+                  id:
                     type: string
                   labels:
                     additionalProperties:
