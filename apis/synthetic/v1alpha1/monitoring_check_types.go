@@ -294,6 +294,8 @@ type MonitoringCheckSpec struct {
 }
 
 type MonitoringCheckSpecResource struct {
+	ID string `json:"id,omitempty" tf:"id,omitempty"`
+
 	// Can be set to `none`, `low`, `medium`, or `high` to correspond to the check [alert levels](https://grafana.com/docs/grafana-cloud/synthetic-monitoring/synthetic-monitoring-alerting/).
 	// +optional
 	AlertSensitivity *string `json:"alertSensitivity,omitempty" tf:"alert_sensitivity"`
@@ -306,9 +308,6 @@ type MonitoringCheckSpecResource struct {
 	// How often the check runs in milliseconds (the value is not truly a "frequency" but a "period"). The minimum acceptable value is 1 second (1000 ms), and the maximum is 120 seconds (120000 ms).
 	// +optional
 	Frequency *int64 `json:"frequency,omitempty" tf:"frequency"`
-	// The ID of the check.
-	// +optional
-	ID *string `json:"ID,omitempty" tf:"id"`
 	// Name used for job label.
 	Job *string `json:"job" tf:"job"`
 	// Custom labels to be included with collected metrics and logs. The maximum number of labels that can be specified per check is 5. These are applied, along with the probe-specific labels, to the outgoing metrics. The names and values of the labels cannot be empty, and the maximum length is 32 bytes.
