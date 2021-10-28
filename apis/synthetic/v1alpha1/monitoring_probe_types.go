@@ -72,7 +72,7 @@ type MonitoringProbeSpecResource struct {
 	Longitude *float64 `json:"longitude" tf:"longitude"`
 	// Name of the probe.
 	Name *string `json:"name" tf:"name"`
-	// Public probes are run by Grafana Labs and can be used by all users. You must be an admin to set this to `true`.
+	// Public probes are run by Grafana Labs and can be used by all users. Only Grafana Labs managed public probes will be set to `true`.
 	// +optional
 	Public *bool `json:"public,omitempty" tf:"public"`
 	// Region of the probe.
