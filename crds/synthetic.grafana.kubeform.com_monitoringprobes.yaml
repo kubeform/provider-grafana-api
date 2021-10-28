@@ -78,7 +78,8 @@ spec:
                     type: string
                   public:
                     description: Public probes are run by Grafana Labs and can be
-                      used by all users. You must be an admin to set this to `true`.
+                      used by all users. Only Grafana Labs managed public probes will
+                      be set to `true`.
                     type: boolean
                   region:
                     description: Region of the probe.
@@ -125,7 +126,8 @@ spec:
                     type: string
                   public:
                     description: Public probes are run by Grafana Labs and can be
-                      used by all users. You must be an admin to set this to `true`.
+                      used by all users. Only Grafana Labs managed public probes will
+                      be set to `true`.
                     type: boolean
                   region:
                     description: Region of the probe.

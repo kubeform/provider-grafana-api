@@ -69,9 +69,9 @@ type SourceSpecJsonData struct {
 	// (MSSQL) Connection SSL encryption handling: 'disable', 'false' or 'true'.
 	// +optional
 	Encrypt *string `json:"encrypt,omitempty" tf:"encrypt"`
-	// (Elasticsearch) Elasticsearch version as a number (2/5/56/60/70).
+	// (Elasticsearch) Elasticsearch semantic version (Grafana v8.0+).
 	// +optional
-	EsVersion *int64 `json:"esVersion,omitempty" tf:"es_version"`
+	EsVersion *string `json:"esVersion,omitempty" tf:"es_version"`
 	// (Graphite) Graphite version.
 	// +optional
 	GraphiteVersion *string `json:"graphiteVersion,omitempty" tf:"graphite_version"`

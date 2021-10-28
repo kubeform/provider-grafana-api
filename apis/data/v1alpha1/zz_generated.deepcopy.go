@@ -171,7 +171,7 @@ func (in *SourceSpecJsonData) DeepCopyInto(out *SourceSpecJsonData) {
 	}
 	if in.EsVersion != nil {
 		in, out := &in.EsVersion, &out.EsVersion
-		*out = new(int64)
+		*out = new(string)
 		**out = **in
 	}
 	if in.GraphiteVersion != nil {
