@@ -25,12 +25,18 @@ import (
 
 	versioned "kubeform.dev/provider-grafana-api/client/clientset/versioned"
 	alert "kubeform.dev/provider-grafana-api/client/informers/externalversions/alert"
+	apikey "kubeform.dev/provider-grafana-api/client/informers/externalversions/apikey"
 	builtin "kubeform.dev/provider-grafana-api/client/informers/externalversions/builtin"
+	cloud "kubeform.dev/provider-grafana-api/client/informers/externalversions/cloud"
 	dashboard "kubeform.dev/provider-grafana-api/client/informers/externalversions/dashboard"
 	data "kubeform.dev/provider-grafana-api/client/informers/externalversions/data"
 	folder "kubeform.dev/provider-grafana-api/client/informers/externalversions/folder"
 	internalinterfaces "kubeform.dev/provider-grafana-api/client/informers/externalversions/internalinterfaces"
+	library "kubeform.dev/provider-grafana-api/client/informers/externalversions/library"
+	machine "kubeform.dev/provider-grafana-api/client/informers/externalversions/machine"
 	organization "kubeform.dev/provider-grafana-api/client/informers/externalversions/organization"
+	playlist "kubeform.dev/provider-grafana-api/client/informers/externalversions/playlist"
+	report "kubeform.dev/provider-grafana-api/client/informers/externalversions/report"
 	role "kubeform.dev/provider-grafana-api/client/informers/externalversions/role"
 	synthetic "kubeform.dev/provider-grafana-api/client/informers/externalversions/synthetic"
 	team "kubeform.dev/provider-grafana-api/client/informers/externalversions/team"
@@ -183,11 +189,17 @@ type SharedInformerFactory interface {
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
 	Alert() alert.Interface
+	Apikey() apikey.Interface
 	Builtin() builtin.Interface
+	Cloud() cloud.Interface
 	Dashboard() dashboard.Interface
 	Data() data.Interface
 	Folder() folder.Interface
+	Library() library.Interface
+	Machine() machine.Interface
 	Organization() organization.Interface
+	Playlist() playlist.Interface
+	Report() report.Interface
 	Role() role.Interface
 	Synthetic() synthetic.Interface
 	Team() team.Interface
@@ -198,8 +210,16 @@ func (f *sharedInformerFactory) Alert() alert.Interface {
 	return alert.New(f, f.namespace, f.tweakListOptions)
 }
 
+func (f *sharedInformerFactory) Apikey() apikey.Interface {
+	return apikey.New(f, f.namespace, f.tweakListOptions)
+}
+
 func (f *sharedInformerFactory) Builtin() builtin.Interface {
 	return builtin.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Cloud() cloud.Interface {
+	return cloud.New(f, f.namespace, f.tweakListOptions)
 }
 
 func (f *sharedInformerFactory) Dashboard() dashboard.Interface {
@@ -214,8 +234,24 @@ func (f *sharedInformerFactory) Folder() folder.Interface {
 	return folder.New(f, f.namespace, f.tweakListOptions)
 }
 
+func (f *sharedInformerFactory) Library() library.Interface {
+	return library.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Machine() machine.Interface {
+	return machine.New(f, f.namespace, f.tweakListOptions)
+}
+
 func (f *sharedInformerFactory) Organization() organization.Interface {
 	return organization.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Playlist() playlist.Interface {
+	return playlist.New(f, f.namespace, f.tweakListOptions)
+}
+
+func (f *sharedInformerFactory) Report() report.Interface {
+	return report.New(f, f.namespace, f.tweakListOptions)
 }
 
 func (f *sharedInformerFactory) Role() role.Interface {

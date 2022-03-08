@@ -58,6 +58,8 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 	scheme.AddKnownTypes(SchemeGroupVersion,
 		&Source{},
 		&SourceList{},
+		&SourcePermission{},
+		&SourcePermissionList{},
 	)
 
 	scheme.AddKnownTypes(SchemeGroupVersion,

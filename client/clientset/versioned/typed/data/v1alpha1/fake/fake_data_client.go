@@ -33,6 +33,10 @@ func (c *FakeDataV1alpha1) Sources(namespace string) v1alpha1.SourceInterface {
 	return &FakeSources{c, namespace}
 }
 
+func (c *FakeDataV1alpha1) SourcePermissions(namespace string) v1alpha1.SourcePermissionInterface {
+	return &FakeSourcePermissions{c, namespace}
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDataV1alpha1) RESTClient() rest.Interface {

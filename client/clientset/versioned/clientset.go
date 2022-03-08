@@ -22,11 +22,17 @@ import (
 	"fmt"
 
 	alertv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/alert/v1alpha1"
+	apikeyv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/apikey/v1alpha1"
 	builtinv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/builtin/v1alpha1"
+	cloudv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/cloud/v1alpha1"
 	dashboardv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/dashboard/v1alpha1"
 	datav1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/data/v1alpha1"
 	folderv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/folder/v1alpha1"
+	libraryv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/library/v1alpha1"
+	machinev1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/machine/v1alpha1"
 	organizationv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/organization/v1alpha1"
+	playlistv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/playlist/v1alpha1"
+	reportv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/report/v1alpha1"
 	rolev1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/role/v1alpha1"
 	syntheticv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/synthetic/v1alpha1"
 	teamv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/team/v1alpha1"
@@ -40,11 +46,17 @@ import (
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
 	AlertV1alpha1() alertv1alpha1.AlertV1alpha1Interface
+	ApikeyV1alpha1() apikeyv1alpha1.ApikeyV1alpha1Interface
 	BuiltinV1alpha1() builtinv1alpha1.BuiltinV1alpha1Interface
+	CloudV1alpha1() cloudv1alpha1.CloudV1alpha1Interface
 	DashboardV1alpha1() dashboardv1alpha1.DashboardV1alpha1Interface
 	DataV1alpha1() datav1alpha1.DataV1alpha1Interface
 	FolderV1alpha1() folderv1alpha1.FolderV1alpha1Interface
+	LibraryV1alpha1() libraryv1alpha1.LibraryV1alpha1Interface
+	MachineV1alpha1() machinev1alpha1.MachineV1alpha1Interface
 	OrganizationV1alpha1() organizationv1alpha1.OrganizationV1alpha1Interface
+	PlaylistV1alpha1() playlistv1alpha1.PlaylistV1alpha1Interface
+	ReportV1alpha1() reportv1alpha1.ReportV1alpha1Interface
 	RoleV1alpha1() rolev1alpha1.RoleV1alpha1Interface
 	SyntheticV1alpha1() syntheticv1alpha1.SyntheticV1alpha1Interface
 	TeamV1alpha1() teamv1alpha1.TeamV1alpha1Interface
@@ -56,11 +68,17 @@ type Interface interface {
 type Clientset struct {
 	*discovery.DiscoveryClient
 	alertV1alpha1        *alertv1alpha1.AlertV1alpha1Client
+	apikeyV1alpha1       *apikeyv1alpha1.ApikeyV1alpha1Client
 	builtinV1alpha1      *builtinv1alpha1.BuiltinV1alpha1Client
+	cloudV1alpha1        *cloudv1alpha1.CloudV1alpha1Client
 	dashboardV1alpha1    *dashboardv1alpha1.DashboardV1alpha1Client
 	dataV1alpha1         *datav1alpha1.DataV1alpha1Client
 	folderV1alpha1       *folderv1alpha1.FolderV1alpha1Client
+	libraryV1alpha1      *libraryv1alpha1.LibraryV1alpha1Client
+	machineV1alpha1      *machinev1alpha1.MachineV1alpha1Client
 	organizationV1alpha1 *organizationv1alpha1.OrganizationV1alpha1Client
+	playlistV1alpha1     *playlistv1alpha1.PlaylistV1alpha1Client
+	reportV1alpha1       *reportv1alpha1.ReportV1alpha1Client
 	roleV1alpha1         *rolev1alpha1.RoleV1alpha1Client
 	syntheticV1alpha1    *syntheticv1alpha1.SyntheticV1alpha1Client
 	teamV1alpha1         *teamv1alpha1.TeamV1alpha1Client
@@ -72,9 +90,19 @@ func (c *Clientset) AlertV1alpha1() alertv1alpha1.AlertV1alpha1Interface {
 	return c.alertV1alpha1
 }
 
+// ApikeyV1alpha1 retrieves the ApikeyV1alpha1Client
+func (c *Clientset) ApikeyV1alpha1() apikeyv1alpha1.ApikeyV1alpha1Interface {
+	return c.apikeyV1alpha1
+}
+
 // BuiltinV1alpha1 retrieves the BuiltinV1alpha1Client
 func (c *Clientset) BuiltinV1alpha1() builtinv1alpha1.BuiltinV1alpha1Interface {
 	return c.builtinV1alpha1
+}
+
+// CloudV1alpha1 retrieves the CloudV1alpha1Client
+func (c *Clientset) CloudV1alpha1() cloudv1alpha1.CloudV1alpha1Interface {
+	return c.cloudV1alpha1
 }
 
 // DashboardV1alpha1 retrieves the DashboardV1alpha1Client
@@ -92,9 +120,29 @@ func (c *Clientset) FolderV1alpha1() folderv1alpha1.FolderV1alpha1Interface {
 	return c.folderV1alpha1
 }
 
+// LibraryV1alpha1 retrieves the LibraryV1alpha1Client
+func (c *Clientset) LibraryV1alpha1() libraryv1alpha1.LibraryV1alpha1Interface {
+	return c.libraryV1alpha1
+}
+
+// MachineV1alpha1 retrieves the MachineV1alpha1Client
+func (c *Clientset) MachineV1alpha1() machinev1alpha1.MachineV1alpha1Interface {
+	return c.machineV1alpha1
+}
+
 // OrganizationV1alpha1 retrieves the OrganizationV1alpha1Client
 func (c *Clientset) OrganizationV1alpha1() organizationv1alpha1.OrganizationV1alpha1Interface {
 	return c.organizationV1alpha1
+}
+
+// PlaylistV1alpha1 retrieves the PlaylistV1alpha1Client
+func (c *Clientset) PlaylistV1alpha1() playlistv1alpha1.PlaylistV1alpha1Interface {
+	return c.playlistV1alpha1
+}
+
+// ReportV1alpha1 retrieves the ReportV1alpha1Client
+func (c *Clientset) ReportV1alpha1() reportv1alpha1.ReportV1alpha1Interface {
+	return c.reportV1alpha1
 }
 
 // RoleV1alpha1 retrieves the RoleV1alpha1Client
@@ -142,7 +190,15 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.apikeyV1alpha1, err = apikeyv1alpha1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.builtinV1alpha1, err = builtinv1alpha1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+	cs.cloudV1alpha1, err = cloudv1alpha1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -158,7 +214,23 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	if err != nil {
 		return nil, err
 	}
+	cs.libraryV1alpha1, err = libraryv1alpha1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+	cs.machineV1alpha1, err = machinev1alpha1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
 	cs.organizationV1alpha1, err = organizationv1alpha1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+	cs.playlistV1alpha1, err = playlistv1alpha1.NewForConfig(&configShallowCopy)
+	if err != nil {
+		return nil, err
+	}
+	cs.reportV1alpha1, err = reportv1alpha1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -191,11 +263,17 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
 	cs.alertV1alpha1 = alertv1alpha1.NewForConfigOrDie(c)
+	cs.apikeyV1alpha1 = apikeyv1alpha1.NewForConfigOrDie(c)
 	cs.builtinV1alpha1 = builtinv1alpha1.NewForConfigOrDie(c)
+	cs.cloudV1alpha1 = cloudv1alpha1.NewForConfigOrDie(c)
 	cs.dashboardV1alpha1 = dashboardv1alpha1.NewForConfigOrDie(c)
 	cs.dataV1alpha1 = datav1alpha1.NewForConfigOrDie(c)
 	cs.folderV1alpha1 = folderv1alpha1.NewForConfigOrDie(c)
+	cs.libraryV1alpha1 = libraryv1alpha1.NewForConfigOrDie(c)
+	cs.machineV1alpha1 = machinev1alpha1.NewForConfigOrDie(c)
 	cs.organizationV1alpha1 = organizationv1alpha1.NewForConfigOrDie(c)
+	cs.playlistV1alpha1 = playlistv1alpha1.NewForConfigOrDie(c)
+	cs.reportV1alpha1 = reportv1alpha1.NewForConfigOrDie(c)
 	cs.roleV1alpha1 = rolev1alpha1.NewForConfigOrDie(c)
 	cs.syntheticV1alpha1 = syntheticv1alpha1.NewForConfigOrDie(c)
 	cs.teamV1alpha1 = teamv1alpha1.NewForConfigOrDie(c)
@@ -209,11 +287,17 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
 	cs.alertV1alpha1 = alertv1alpha1.New(c)
+	cs.apikeyV1alpha1 = apikeyv1alpha1.New(c)
 	cs.builtinV1alpha1 = builtinv1alpha1.New(c)
+	cs.cloudV1alpha1 = cloudv1alpha1.New(c)
 	cs.dashboardV1alpha1 = dashboardv1alpha1.New(c)
 	cs.dataV1alpha1 = datav1alpha1.New(c)
 	cs.folderV1alpha1 = folderv1alpha1.New(c)
+	cs.libraryV1alpha1 = libraryv1alpha1.New(c)
+	cs.machineV1alpha1 = machinev1alpha1.New(c)
 	cs.organizationV1alpha1 = organizationv1alpha1.New(c)
+	cs.playlistV1alpha1 = playlistv1alpha1.New(c)
+	cs.reportV1alpha1 = reportv1alpha1.New(c)
 	cs.roleV1alpha1 = rolev1alpha1.New(c)
 	cs.syntheticV1alpha1 = syntheticv1alpha1.New(c)
 	cs.teamV1alpha1 = teamv1alpha1.New(c)

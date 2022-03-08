@@ -134,6 +134,11 @@ func (in *DashboardSpecResource) DeepCopyInto(out *DashboardSpecResource) {
 		*out = new(int64)
 		**out = **in
 	}
+	if in.Message != nil {
+		in, out := &in.Message, &out.Message
+		*out = new(string)
+		**out = **in
+	}
 	if in.Overwrite != nil {
 		in, out := &in.Overwrite, &out.Overwrite
 		*out = new(bool)

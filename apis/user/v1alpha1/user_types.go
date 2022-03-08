@@ -73,6 +73,9 @@ type UserSpecResource struct {
 	Name *string `json:"name,omitempty" tf:"name"`
 	// The password for the Grafana user.
 	Password *string `json:"-" sensitive:"true" tf:"password"`
+	// The numerical ID of the Grafana user.
+	// +optional
+	UserID *int64 `json:"userID,omitempty" tf:"user_id"`
 }
 
 type UserStatus struct {

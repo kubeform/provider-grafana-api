@@ -62,7 +62,7 @@ type TeamSpecResource struct {
 	// +optional
 	Email *string `json:"email,omitempty" tf:"email"`
 	//
-	// A list of email addresses corresponding to users who should be given membership
+	// A set of email addresses corresponding to users who should be given membership
 	// to the team. Note: users specified here must already exist in Grafana.
 	//
 	// +optional

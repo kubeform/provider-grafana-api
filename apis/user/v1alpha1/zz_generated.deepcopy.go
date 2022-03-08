@@ -149,6 +149,11 @@ func (in *UserSpecResource) DeepCopyInto(out *UserSpecResource) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.UserID != nil {
+		in, out := &in.UserID, &out.UserID
+		*out = new(int64)
+		**out = **in
+	}
 	return
 }
 

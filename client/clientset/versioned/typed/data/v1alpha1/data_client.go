@@ -28,6 +28,7 @@ import (
 type DataV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	SourcesGetter
+	SourcePermissionsGetter
 }
 
 // DataV1alpha1Client is used to interact with features provided by the data.grafana.kubeform.com group.
@@ -37,6 +38,10 @@ type DataV1alpha1Client struct {
 
 func (c *DataV1alpha1Client) Sources(namespace string) SourceInterface {
 	return newSources(c, namespace)
+}
+
+func (c *DataV1alpha1Client) SourcePermissions(namespace string) SourcePermissionInterface {
+	return newSourcePermissions(c, namespace)
 }
 
 // NewForConfig creates a new DataV1alpha1Client for the given config.

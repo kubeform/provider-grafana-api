@@ -26,6 +26,8 @@ import (
 type Interface interface {
 	// Sources returns a SourceInformer.
 	Sources() SourceInformer
+	// SourcePermissions returns a SourcePermissionInformer.
+	SourcePermissions() SourcePermissionInformer
 }
 
 type version struct {
@@ -42,4 +44,9 @@ func New(f internalinterfaces.SharedInformerFactory, namespace string, tweakList
 // Sources returns a SourceInformer.
 func (v *version) Sources() SourceInformer {
 	return &sourceInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+}
+
+// SourcePermissions returns a SourcePermissionInformer.
+func (v *version) SourcePermissions() SourcePermissionInformer {
+	return &sourcePermissionInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

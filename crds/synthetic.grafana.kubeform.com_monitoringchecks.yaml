@@ -99,7 +99,8 @@ spec:
                       type: integer
                     type: array
                   settings:
-                    description: Check settings.
+                    description: Check settings. Should contain exactly one nested
+                      block.
                     properties:
                       dns:
                         description: Settings for DNS check. The target must be a
@@ -391,6 +392,23 @@ spec:
                                 description: Used to verify the hostname for the targets.
                                 type: string
                             type: object
+                        type: object
+                      traceroute:
+                        description: Settings for traceroute check. The target must
+                          be a valid hostname or IP address
+                        properties:
+                          maxHops:
+                            description: Maximum TTL for the trace
+                            format: int64
+                            type: integer
+                          maxUnknownHops:
+                            description: Maximum number of hosts to travers that give
+                              no response
+                            format: int64
+                            type: integer
+                          ptrLookup:
+                            description: Reverse lookup hostnames from IP addresses
+                            type: boolean
                         type: object
                     type: object
                   target:
@@ -465,7 +483,8 @@ spec:
                       type: integer
                     type: array
                   settings:
-                    description: Check settings.
+                    description: Check settings. Should contain exactly one nested
+                      block.
                     properties:
                       dns:
                         description: Settings for DNS check. The target must be a
@@ -757,6 +776,23 @@ spec:
                                 description: Used to verify the hostname for the targets.
                                 type: string
                             type: object
+                        type: object
+                      traceroute:
+                        description: Settings for traceroute check. The target must
+                          be a valid hostname or IP address
+                        properties:
+                          maxHops:
+                            description: Maximum TTL for the trace
+                            format: int64
+                            type: integer
+                          maxUnknownHops:
+                            description: Maximum number of hosts to travers that give
+                              no response
+                            format: int64
+                            type: integer
+                          ptrLookup:
+                            description: Reverse lookup hostnames from IP addresses
+                            type: boolean
                         type: object
                     type: object
                   target:
