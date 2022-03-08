@@ -71,6 +71,10 @@ spec:
                   name:
                     description: The display name for the Grafana user.
                     type: string
+                  userID:
+                    description: The numerical ID of the Grafana user.
+                    format: int64
+                    type: integer
                 required:
                 - email
                 type: object
@@ -99,6 +103,10 @@ spec:
                   name:
                     description: The display name for the Grafana user.
                     type: string
+                  userID:
+                    description: The numerical ID of the Grafana user.
+                    format: int64
+                    type: integer
                 required:
                 - email
                 type: object

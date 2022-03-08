@@ -22,16 +22,28 @@ import (
 	clientset "kubeform.dev/provider-grafana-api/client/clientset/versioned"
 	alertv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/alert/v1alpha1"
 	fakealertv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/alert/v1alpha1/fake"
+	apikeyv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/apikey/v1alpha1"
+	fakeapikeyv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/apikey/v1alpha1/fake"
 	builtinv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/builtin/v1alpha1"
 	fakebuiltinv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/builtin/v1alpha1/fake"
+	cloudv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/cloud/v1alpha1"
+	fakecloudv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/cloud/v1alpha1/fake"
 	dashboardv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/dashboard/v1alpha1"
 	fakedashboardv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/dashboard/v1alpha1/fake"
 	datav1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/data/v1alpha1"
 	fakedatav1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/data/v1alpha1/fake"
 	folderv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/folder/v1alpha1"
 	fakefolderv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/folder/v1alpha1/fake"
+	libraryv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/library/v1alpha1"
+	fakelibraryv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/library/v1alpha1/fake"
+	machinev1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/machine/v1alpha1"
+	fakemachinev1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/machine/v1alpha1/fake"
 	organizationv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/organization/v1alpha1"
 	fakeorganizationv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/organization/v1alpha1/fake"
+	playlistv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/playlist/v1alpha1"
+	fakeplaylistv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/playlist/v1alpha1/fake"
+	reportv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/report/v1alpha1"
+	fakereportv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/report/v1alpha1/fake"
 	rolev1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/role/v1alpha1"
 	fakerolev1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/role/v1alpha1/fake"
 	syntheticv1alpha1 "kubeform.dev/provider-grafana-api/client/clientset/versioned/typed/synthetic/v1alpha1"
@@ -100,9 +112,19 @@ func (c *Clientset) AlertV1alpha1() alertv1alpha1.AlertV1alpha1Interface {
 	return &fakealertv1alpha1.FakeAlertV1alpha1{Fake: &c.Fake}
 }
 
+// ApikeyV1alpha1 retrieves the ApikeyV1alpha1Client
+func (c *Clientset) ApikeyV1alpha1() apikeyv1alpha1.ApikeyV1alpha1Interface {
+	return &fakeapikeyv1alpha1.FakeApikeyV1alpha1{Fake: &c.Fake}
+}
+
 // BuiltinV1alpha1 retrieves the BuiltinV1alpha1Client
 func (c *Clientset) BuiltinV1alpha1() builtinv1alpha1.BuiltinV1alpha1Interface {
 	return &fakebuiltinv1alpha1.FakeBuiltinV1alpha1{Fake: &c.Fake}
+}
+
+// CloudV1alpha1 retrieves the CloudV1alpha1Client
+func (c *Clientset) CloudV1alpha1() cloudv1alpha1.CloudV1alpha1Interface {
+	return &fakecloudv1alpha1.FakeCloudV1alpha1{Fake: &c.Fake}
 }
 
 // DashboardV1alpha1 retrieves the DashboardV1alpha1Client
@@ -120,9 +142,29 @@ func (c *Clientset) FolderV1alpha1() folderv1alpha1.FolderV1alpha1Interface {
 	return &fakefolderv1alpha1.FakeFolderV1alpha1{Fake: &c.Fake}
 }
 
+// LibraryV1alpha1 retrieves the LibraryV1alpha1Client
+func (c *Clientset) LibraryV1alpha1() libraryv1alpha1.LibraryV1alpha1Interface {
+	return &fakelibraryv1alpha1.FakeLibraryV1alpha1{Fake: &c.Fake}
+}
+
+// MachineV1alpha1 retrieves the MachineV1alpha1Client
+func (c *Clientset) MachineV1alpha1() machinev1alpha1.MachineV1alpha1Interface {
+	return &fakemachinev1alpha1.FakeMachineV1alpha1{Fake: &c.Fake}
+}
+
 // OrganizationV1alpha1 retrieves the OrganizationV1alpha1Client
 func (c *Clientset) OrganizationV1alpha1() organizationv1alpha1.OrganizationV1alpha1Interface {
 	return &fakeorganizationv1alpha1.FakeOrganizationV1alpha1{Fake: &c.Fake}
+}
+
+// PlaylistV1alpha1 retrieves the PlaylistV1alpha1Client
+func (c *Clientset) PlaylistV1alpha1() playlistv1alpha1.PlaylistV1alpha1Interface {
+	return &fakeplaylistv1alpha1.FakePlaylistV1alpha1{Fake: &c.Fake}
+}
+
+// ReportV1alpha1 retrieves the ReportV1alpha1Client
+func (c *Clientset) ReportV1alpha1() reportv1alpha1.ReportV1alpha1Interface {
+	return &fakereportv1alpha1.FakeReportV1alpha1{Fake: &c.Fake}
 }
 
 // RoleV1alpha1 retrieves the RoleV1alpha1Client

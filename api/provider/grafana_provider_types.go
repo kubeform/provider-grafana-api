@@ -20,21 +20,34 @@ package provider
 
 type GrafanaSpec struct {
 	// API token or basic auth username:password. May alternatively be set via the `GRAFANA_AUTH` environment variable.
+	// +optional
 	Auth *string `json:"-" sensitive:"true" tf:"auth"`
 	// Certificate CA bundle to use to verify the Grafana server's certificate. May alternatively be set via the `GRAFANA_CA_CERT` environment variable.
 	// +optional
 	CaCert *string `json:"caCert,omitempty" tf:"ca_cert"`
+	// API key for Grafana Cloud. May alternatively be set via the `GRAFANA_CLOUD_API_KEY` environment variable.
+	// +optional
+	CloudAPIKey *string `json:"-" sensitive:"true" tf:"cloud_api_key"`
+	// Grafana Cloud's API URL. May alternatively be set via the `GRAFANA_CLOUD_API_URL` environment variable.
+	// +optional
+	CloudAPIURL *string `json:"cloudAPIURL,omitempty" tf:"cloud_api_url"`
 	// Skip TLS certificate verification. May alternatively be set via the `GRAFANA_INSECURE_SKIP_VERIFY` environment variable.
 	// +optional
 	InsecureSkipVerify *bool `json:"insecureSkipVerify,omitempty" tf:"insecure_skip_verify"`
 	// The organization id to operate on within grafana. May alternatively be set via the `GRAFANA_ORG_ID` environment variable.
 	OrgID *int64 `json:"orgID" tf:"org_id"`
+	// The amount of retries to use for Grafana API calls. May alternatively be set via the `GRAFANA_RETRIES` environment variable.
+	// +optional
+	Retries *int64 `json:"retries,omitempty" tf:"retries"`
 	// A Synthetic Monitoring access token. May alternatively be set via the `GRAFANA_SM_ACCESS_TOKEN` environment variable.
 	// +optional
 	SmAccessToken *string `json:"-" sensitive:"true" tf:"sm_access_token"`
 	// Synthetic monitoring backend address. May alternatively be set via the `GRAFANA_SM_URL` environment variable.
 	// +optional
 	SmURL *string `json:"smURL,omitempty" tf:"sm_url"`
+	// Set to true if you want to save only the sha256sum instead of complete dashboard model JSON in the tfstate.
+	// +optional
+	StoreDashboardSha256 *bool `json:"storeDashboardSha256,omitempty" tf:"store_dashboard_sha256"`
 	// Client TLS certificate file to use to authenticate to the Grafana server. May alternatively be set via the `GRAFANA_TLS_CERT` environment variable.
 	// +optional
 	TlsCert *string `json:"tlsCert,omitempty" tf:"tls_cert"`
@@ -42,5 +55,6 @@ type GrafanaSpec struct {
 	// +optional
 	TlsKey *string `json:"tlsKey,omitempty" tf:"tls_key"`
 	// The root URL of a Grafana server. May alternatively be set via the `GRAFANA_URL` environment variable.
-	Url *string `json:"url" tf:"url"`
+	// +optional
+	Url *string `json:"url,omitempty" tf:"url"`
 }

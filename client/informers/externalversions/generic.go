@@ -22,11 +22,17 @@ import (
 	"fmt"
 
 	v1alpha1 "kubeform.dev/provider-grafana-api/apis/alert/v1alpha1"
+	apikeyv1alpha1 "kubeform.dev/provider-grafana-api/apis/apikey/v1alpha1"
 	builtinv1alpha1 "kubeform.dev/provider-grafana-api/apis/builtin/v1alpha1"
+	cloudv1alpha1 "kubeform.dev/provider-grafana-api/apis/cloud/v1alpha1"
 	dashboardv1alpha1 "kubeform.dev/provider-grafana-api/apis/dashboard/v1alpha1"
 	datav1alpha1 "kubeform.dev/provider-grafana-api/apis/data/v1alpha1"
 	folderv1alpha1 "kubeform.dev/provider-grafana-api/apis/folder/v1alpha1"
+	libraryv1alpha1 "kubeform.dev/provider-grafana-api/apis/library/v1alpha1"
+	machinev1alpha1 "kubeform.dev/provider-grafana-api/apis/machine/v1alpha1"
 	organizationv1alpha1 "kubeform.dev/provider-grafana-api/apis/organization/v1alpha1"
+	playlistv1alpha1 "kubeform.dev/provider-grafana-api/apis/playlist/v1alpha1"
+	reportv1alpha1 "kubeform.dev/provider-grafana-api/apis/report/v1alpha1"
 	rolev1alpha1 "kubeform.dev/provider-grafana-api/apis/role/v1alpha1"
 	syntheticv1alpha1 "kubeform.dev/provider-grafana-api/apis/synthetic/v1alpha1"
 	teamv1alpha1 "kubeform.dev/provider-grafana-api/apis/team/v1alpha1"
@@ -66,9 +72,17 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	case v1alpha1.SchemeGroupVersion.WithResource("notifications"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Alert().V1alpha1().Notifications().Informer()}, nil
 
+		// Group=apikey.grafana.kubeform.com, Version=v1alpha1
+	case apikeyv1alpha1.SchemeGroupVersion.WithResource("apikeys"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Apikey().V1alpha1().ApiKeys().Informer()}, nil
+
 		// Group=builtin.grafana.kubeform.com, Version=v1alpha1
 	case builtinv1alpha1.SchemeGroupVersion.WithResource("roleassignments"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Builtin().V1alpha1().RoleAssignments().Informer()}, nil
+
+		// Group=cloud.grafana.kubeform.com, Version=v1alpha1
+	case cloudv1alpha1.SchemeGroupVersion.WithResource("stacks"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Cloud().V1alpha1().Stacks().Informer()}, nil
 
 		// Group=dashboard.grafana.kubeform.com, Version=v1alpha1
 	case dashboardv1alpha1.SchemeGroupVersion.WithResource("dashboards"):
@@ -79,6 +93,8 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 		// Group=data.grafana.kubeform.com, Version=v1alpha1
 	case datav1alpha1.SchemeGroupVersion.WithResource("sources"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Data().V1alpha1().Sources().Informer()}, nil
+	case datav1alpha1.SchemeGroupVersion.WithResource("sourcepermissions"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Data().V1alpha1().SourcePermissions().Informer()}, nil
 
 		// Group=folder.grafana.kubeform.com, Version=v1alpha1
 	case folderv1alpha1.SchemeGroupVersion.WithResource("folders"):
@@ -86,9 +102,25 @@ func (f *sharedInformerFactory) ForResource(resource schema.GroupVersionResource
 	case folderv1alpha1.SchemeGroupVersion.WithResource("permissions"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Folder().V1alpha1().Permissions().Informer()}, nil
 
+		// Group=library.grafana.kubeform.com, Version=v1alpha1
+	case libraryv1alpha1.SchemeGroupVersion.WithResource("panels"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Library().V1alpha1().Panels().Informer()}, nil
+
+		// Group=machine.grafana.kubeform.com, Version=v1alpha1
+	case machinev1alpha1.SchemeGroupVersion.WithResource("learningjobs"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Machine().V1alpha1().LearningJobs().Informer()}, nil
+
 		// Group=organization.grafana.kubeform.com, Version=v1alpha1
 	case organizationv1alpha1.SchemeGroupVersion.WithResource("organizations"):
 		return &genericInformer{resource: resource.GroupResource(), informer: f.Organization().V1alpha1().Organizations().Informer()}, nil
+
+		// Group=playlist.grafana.kubeform.com, Version=v1alpha1
+	case playlistv1alpha1.SchemeGroupVersion.WithResource("playlists"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Playlist().V1alpha1().Playlists().Informer()}, nil
+
+		// Group=report.grafana.kubeform.com, Version=v1alpha1
+	case reportv1alpha1.SchemeGroupVersion.WithResource("reports"):
+		return &genericInformer{resource: resource.GroupResource(), informer: f.Report().V1alpha1().Reports().Informer()}, nil
 
 		// Group=role.grafana.kubeform.com, Version=v1alpha1
 	case rolev1alpha1.SchemeGroupVersion.WithResource("roles"):

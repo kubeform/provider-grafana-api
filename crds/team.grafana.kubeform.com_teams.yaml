@@ -63,7 +63,7 @@ spec:
                   id:
                     type: string
                   members:
-                    description: 'A list of email addresses corresponding to users
+                    description: 'A set of email addresses corresponding to users
                       who should be given membership to the team. Note: users specified
                       here must already exist in Grafana.'
                     items:
@@ -87,7 +87,7 @@ spec:
                   id:
                     type: string
                   members:
-                    description: 'A list of email addresses corresponding to users
+                    description: 'A set of email addresses corresponding to users
                       who should be given membership to the team. Note: users specified
                       here must already exist in Grafana.'
                     items:

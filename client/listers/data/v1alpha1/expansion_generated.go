@@ -25,3 +25,11 @@ type SourceListerExpansion interface{}
 // SourceNamespaceListerExpansion allows custom methods to be added to
 // SourceNamespaceLister.
 type SourceNamespaceListerExpansion interface{}
+
+// SourcePermissionListerExpansion allows custom methods to be added to
+// SourcePermissionLister.
+type SourcePermissionListerExpansion interface{}
+
+// SourcePermissionNamespaceListerExpansion allows custom methods to be added to
+// SourcePermissionNamespaceLister.
+type SourcePermissionNamespaceListerExpansion interface{}

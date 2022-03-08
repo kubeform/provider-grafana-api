@@ -37,6 +37,7 @@ func GetEncoder() map[string]jsoniter.ValEncoder {
 		jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsPing{}).Type1()):                    MonitoringCheckSpecSettingsPingCodec{},
 		jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTcp{}).Type1()):                     MonitoringCheckSpecSettingsTcpCodec{},
 		jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTcpTlsConfig{}).Type1()):            MonitoringCheckSpecSettingsTcpTlsConfigCodec{},
+		jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTraceroute{}).Type1()):              MonitoringCheckSpecSettingsTracerouteCodec{},
 	}
 }
 
@@ -52,6 +53,7 @@ func GetDecoder() map[string]jsoniter.ValDecoder {
 		jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsPing{}).Type1()):                    MonitoringCheckSpecSettingsPingCodec{},
 		jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTcp{}).Type1()):                     MonitoringCheckSpecSettingsTcpCodec{},
 		jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTcpTlsConfig{}).Type1()):            MonitoringCheckSpecSettingsTcpTlsConfigCodec{},
+		jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTraceroute{}).Type1()):              MonitoringCheckSpecSettingsTracerouteCodec{},
 	}
 }
 
@@ -854,5 +856,84 @@ func (MonitoringCheckSpecSettingsTcpTlsConfigCodec) Decode(ptr unsafe.Pointer, i
 		}
 	default:
 		iter.ReportError("decode MonitoringCheckSpecSettingsTcpTlsConfig", "unexpected JSON type")
+	}
+}
+
+// +k8s:deepcopy-gen=false
+type MonitoringCheckSpecSettingsTracerouteCodec struct {
+}
+
+func (MonitoringCheckSpecSettingsTracerouteCodec) IsEmpty(ptr unsafe.Pointer) bool {
+	return (*MonitoringCheckSpecSettingsTraceroute)(ptr) == nil
+}
+
+func (MonitoringCheckSpecSettingsTracerouteCodec) Encode(ptr unsafe.Pointer, stream *jsoniter.Stream) {
+	obj := (*MonitoringCheckSpecSettingsTraceroute)(ptr)
+	var objs []MonitoringCheckSpecSettingsTraceroute
+	if obj != nil {
+		objs = []MonitoringCheckSpecSettingsTraceroute{*obj}
+	}
+
+	jsonit := jsoniter.Config{
+		EscapeHTML:             true,
+		SortMapKeys:            true,
+		ValidateJsonRawMessage: true,
+		TagKey:                 "tf",
+		TypeEncoders:           getEncodersWithout(jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTraceroute{}).Type1())),
+	}.Froze()
+
+	byt, _ := jsonit.Marshal(objs)
+
+	stream.Write(byt)
+}
+
+func (MonitoringCheckSpecSettingsTracerouteCodec) Decode(ptr unsafe.Pointer, iter *jsoniter.Iterator) {
+	switch iter.WhatIsNext() {
+	case jsoniter.NilValue:
+		iter.Skip()
+		*(*MonitoringCheckSpecSettingsTraceroute)(ptr) = MonitoringCheckSpecSettingsTraceroute{}
+		return
+	case jsoniter.ArrayValue:
+		objsByte := iter.SkipAndReturnBytes()
+		if len(objsByte) > 0 {
+			var objs []MonitoringCheckSpecSettingsTraceroute
+
+			jsonit := jsoniter.Config{
+				EscapeHTML:             true,
+				SortMapKeys:            true,
+				ValidateJsonRawMessage: true,
+				TagKey:                 "tf",
+				TypeDecoders:           getDecodersWithout(jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTraceroute{}).Type1())),
+			}.Froze()
+			jsonit.Unmarshal(objsByte, &objs)
+
+			if len(objs) > 0 {
+				*(*MonitoringCheckSpecSettingsTraceroute)(ptr) = objs[0]
+			} else {
+				*(*MonitoringCheckSpecSettingsTraceroute)(ptr) = MonitoringCheckSpecSettingsTraceroute{}
+			}
+		} else {
+			*(*MonitoringCheckSpecSettingsTraceroute)(ptr) = MonitoringCheckSpecSettingsTraceroute{}
+		}
+	case jsoniter.ObjectValue:
+		objByte := iter.SkipAndReturnBytes()
+		if len(objByte) > 0 {
+			var obj MonitoringCheckSpecSettingsTraceroute
+
+			jsonit := jsoniter.Config{
+				EscapeHTML:             true,
+				SortMapKeys:            true,
+				ValidateJsonRawMessage: true,
+				TagKey:                 "tf",
+				TypeDecoders:           getDecodersWithout(jsoniter.MustGetKind(reflect2.TypeOf(MonitoringCheckSpecSettingsTraceroute{}).Type1())),
+			}.Froze()
+			jsonit.Unmarshal(objByte, &obj)
+
+			*(*MonitoringCheckSpecSettingsTraceroute)(ptr) = obj
+		} else {
+			*(*MonitoringCheckSpecSettingsTraceroute)(ptr) = MonitoringCheckSpecSettingsTraceroute{}
+		}
+	default:
+		iter.ReportError("decode MonitoringCheckSpecSettingsTraceroute", "unexpected JSON type")
 	}
 }

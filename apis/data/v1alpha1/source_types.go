@@ -41,16 +41,30 @@ type Source struct {
 	Status            SourceStatus `json:"status,omitempty"`
 }
 
+type SourceSpecJsonDataDerivedField struct {
+	// +optional
+	DatasourceUid *string `json:"datasourceUid,omitempty" tf:"datasource_uid"`
+	// +optional
+	MatcherRegex *string `json:"matcherRegex,omitempty" tf:"matcher_regex"`
+	// +optional
+	Name *string `json:"name,omitempty" tf:"name"`
+	// +optional
+	Url *string `json:"url,omitempty" tf:"url"`
+}
+
 type SourceSpecJsonData struct {
-	// (CloudWatch) The ARN of the role to be assumed by Grafana when using the CloudWatch data source.
+	// (CloudWatch, Athena) The ARN of the role to be assumed by Grafana when using the CloudWatch or Athena data source.
 	// +optional
 	AssumeRoleArn *string `json:"assumeRoleArn,omitempty" tf:"assume_role_arn"`
-	// (CloudWatch) The authentication type used to access the data source.
+	// (CloudWatch, Athena) The authentication type used to access the data source.
 	// +optional
 	AuthType *string `json:"authType,omitempty" tf:"auth_type"`
 	// (Stackdriver) The authentication type: `jwt` or `gce`.
 	// +optional
 	AuthenticationType *string `json:"authenticationType,omitempty" tf:"authentication_type"`
+	// (Athena) Athena catalog.
+	// +optional
+	Catalog *string `json:"catalog,omitempty" tf:"catalog"`
 	// (Stackdriver) Service account email address.
 	// +optional
 	ClientEmail *string `json:"clientEmail,omitempty" tf:"client_email"`
@@ -60,18 +74,33 @@ type SourceSpecJsonData struct {
 	// (CloudWatch) A comma-separated list of custom namespaces to be queried by the CloudWatch data source.
 	// +optional
 	CustomMetricsNamespaces *string `json:"customMetricsNamespaces,omitempty" tf:"custom_metrics_namespaces"`
+	// (Athena) Name of the database within the catalog.
+	// +optional
+	Database *string `json:"database,omitempty" tf:"database"`
+	// (InfluxDB) The default bucket for the data source.
+	// +optional
+	DefaultBucket *string `json:"defaultBucket,omitempty" tf:"default_bucket"`
 	// (Stackdriver) The default project for the data source.
 	// +optional
 	DefaultProject *string `json:"defaultProject,omitempty" tf:"default_project"`
-	// (CloudWatch) The default region for the data source.
+	// (CloudWatch, Athena) The default region for the data source.
 	// +optional
 	DefaultRegion *string `json:"defaultRegion,omitempty" tf:"default_region"`
+	// (Loki) See https://grafana.com/docs/grafana/latest/datasources/loki/#derived-fields
+	// +optional
+	DerivedField []SourceSpecJsonDataDerivedField `json:"derivedField,omitempty" tf:"derived_field"`
 	// (MSSQL) Connection SSL encryption handling: 'disable', 'false' or 'true'.
 	// +optional
 	Encrypt *string `json:"encrypt,omitempty" tf:"encrypt"`
 	// (Elasticsearch) Elasticsearch semantic version (Grafana v8.0+).
 	// +optional
 	EsVersion *string `json:"esVersion,omitempty" tf:"es_version"`
+	// (CloudWatch, Athena) If you are assuming a role in another account, that has been created with an external ID, specify the external ID here.
+	// +optional
+	ExternalID *string `json:"externalID,omitempty" tf:"external_id"`
+	// (Github) Github URL
+	// +optional
+	GithubURL *string `json:"githubURL,omitempty" tf:"github_url"`
 	// (Graphite) Graphite version.
 	// +optional
 	GraphiteVersion *string `json:"graphiteVersion,omitempty" tf:"graphite_version"`
@@ -93,13 +122,25 @@ type SourceSpecJsonData struct {
 	// (MySQL, PostgreSQL and MSSQL) Maximum number of connections in the idle connection pool (Grafana v5.4+).
 	// +optional
 	MaxIdleConns *int64 `json:"maxIdleConns,omitempty" tf:"max_idle_conns"`
+	// (Loki) Upper limit for the number of log lines returned by Loki
+	// +optional
+	MaxLines *int64 `json:"maxLines,omitempty" tf:"max_lines"`
 	// (MySQL, PostgreSQL and MSSQL) Maximum number of open connections to the database (Grafana v5.4+).
 	// +optional
 	MaxOpenConns *int64 `json:"maxOpenConns,omitempty" tf:"max_open_conns"`
+	// (Sentry) Organization slug.
+	// +optional
+	OrgSlug *string `json:"orgSlug,omitempty" tf:"org_slug"`
+	// (InfluxDB) An organization is a workspace for a group of users. All dashboards, tasks, buckets, members, etc., belong to an organization.
+	// +optional
+	Organization *string `json:"organization,omitempty" tf:"organization"`
+	// (Athena) AWS S3 bucket to store execution outputs. If not specified, the default query result location from the Workgroup configuration will be used.
+	// +optional
+	OutputLocation *string `json:"outputLocation,omitempty" tf:"output_location"`
 	// (PostgreSQL) Postgres version as a number (903/904/905/906/1000) meaning v9.3, v9.4, etc.
 	// +optional
 	PostgresVersion *int64 `json:"postgresVersion,omitempty" tf:"postgres_version"`
-	// (CloudWatch) The credentials profile name to use when authentication type is set as 'Credentials file'.
+	// (CloudWatch, Athena) The credentials profile name to use when authentication type is set as 'Credentials file'.
 	// +optional
 	Profile *string `json:"profile,omitempty" tf:"profile"`
 	// (Prometheus) Timeout for queries made to the Prometheus data source in seconds.
@@ -149,10 +190,55 @@ type SourceSpecJsonData struct {
 	TokenURI *string `json:"tokenURI,omitempty" tf:"token_uri"`
 	// (OpenTSDB) Resolution.
 	// +optional
-	TsdbResolution *string `json:"tsdbResolution,omitempty" tf:"tsdb_resolution"`
+	TsdbResolution *int64 `json:"tsdbResolution,omitempty" tf:"tsdb_resolution"`
 	// (OpenTSDB) Version.
 	// +optional
-	TsdbVersion *string `json:"tsdbVersion,omitempty" tf:"tsdb_version"`
+	TsdbVersion *int64 `json:"tsdbVersion,omitempty" tf:"tsdb_version"`
+	// (InfluxDB) InfluxQL or Flux.
+	// +optional
+	Version *string `json:"version,omitempty" tf:"version"`
+	// (Athena) Workgroup to use.
+	// +optional
+	Workgroup *string `json:"workgroup,omitempty" tf:"workgroup"`
+}
+
+type SourceSpecSecureJSONData struct {
+	// (CloudWatch, Athena) The access key to use to access the data source.
+	// +optional
+	AccessKey *string `json:"-" sensitive:"true" tf:"access_key"`
+	// (Github) The access token to use to access the data source
+	// +optional
+	AccessToken *string `json:"-" sensitive:"true" tf:"access_token"`
+	// (Sentry) Authorization token.
+	// +optional
+	AuthToken *string `json:"-" sensitive:"true" tf:"auth_token"`
+	// (All) Password to use for basic authentication.
+	// +optional
+	BasicAuthPassword *string `json:"-" sensitive:"true" tf:"basic_auth_password"`
+	// (All) Password to use for authentication.
+	// +optional
+	Password *string `json:"-" sensitive:"true" tf:"password"`
+	// (Stackdriver) The service account key `private_key` to use to access the data source.
+	// +optional
+	PrivateKey *string `json:"-" sensitive:"true" tf:"private_key"`
+	// (CloudWatch, Athena) The secret key to use to access the data source.
+	// +optional
+	SecretKey *string `json:"-" sensitive:"true" tf:"secret_key"`
+	// (Elasticsearch and Prometheus) SigV4 access key. Required when using 'keys' auth provider.
+	// +optional
+	Sigv4AccessKey *string `json:"-" sensitive:"true" tf:"sigv4_access_key"`
+	// (Elasticsearch and Prometheus) SigV4 secret key. Required when using 'keys' auth provider.
+	// +optional
+	Sigv4SecretKey *string `json:"-" sensitive:"true" tf:"sigv4_secret_key"`
+	// (All) CA cert for out going requests.
+	// +optional
+	TlsCaCert *string `json:"-" sensitive:"true" tf:"tls_ca_cert"`
+	// (All) TLS Client cert for outgoing requests.
+	// +optional
+	TlsClientCert *string `json:"-" sensitive:"true" tf:"tls_client_cert"`
+	// (All) TLS Client key for outgoing requests.
+	// +optional
+	TlsClientKey *string `json:"-" sensitive:"true" tf:"tls_client_key"`
 }
 
 type SourceSpec struct {
@@ -189,6 +275,9 @@ type SourceSpecResource struct {
 	// (Required by some data source types) The name of the database to use on the selected data source server.
 	// +optional
 	DatabaseName *string `json:"databaseName,omitempty" tf:"database_name"`
+	// Custom HTTP headers
+	// +optional
+	HttpHeaders *map[string]string `json:"-" sensitive:"true" tf:"http_headers"`
 	// Whether to set the data source as default. This should only be `true` to a single data source.
 	// +optional
 	IsDefault *bool `json:"isDefault,omitempty" tf:"is_default"`
@@ -201,8 +290,12 @@ type SourceSpecResource struct {
 	// +optional
 	Password *string `json:"-" sensitive:"true" tf:"password"`
 	// +optional
+	SecureJSONData []SourceSpecSecureJSONData `json:"-" sensitive:"true" tf:"secure_json_data"`
 	// The data source type. Must be one of the supported data source keywords.
 	Type *string `json:"type" tf:"type"`
+	// Unique identifier. If unset, this will be automatically generated.
+	// +optional
+	Uid *string `json:"uid,omitempty" tf:"uid"`
 	// The URL for the data source. The type of URL required varies depending on the chosen data source type.
 	// +optional
 	Url *string `json:"url,omitempty" tf:"url"`

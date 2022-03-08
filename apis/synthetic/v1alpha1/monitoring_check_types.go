@@ -264,6 +264,18 @@ type MonitoringCheckSpecSettingsTcp struct {
 	TlsConfig *MonitoringCheckSpecSettingsTcpTlsConfig `json:"tlsConfig,omitempty" tf:"tls_config"`
 }
 
+type MonitoringCheckSpecSettingsTraceroute struct {
+	// Maximum TTL for the trace
+	// +optional
+	MaxHops *int64 `json:"maxHops,omitempty" tf:"max_hops"`
+	// Maximum number of hosts to travers that give no response
+	// +optional
+	MaxUnknownHops *int64 `json:"maxUnknownHops,omitempty" tf:"max_unknown_hops"`
+	// Reverse lookup hostnames from IP addresses
+	// +optional
+	PtrLookup *bool `json:"ptrLookup,omitempty" tf:"ptr_lookup"`
+}
+
 type MonitoringCheckSpecSettings struct {
 	// Settings for DNS check. The target must be a valid hostname (or IP address for `PTR` records).
 	// +optional
@@ -277,6 +289,9 @@ type MonitoringCheckSpecSettings struct {
 	// Settings for TCP check. The target must be of the form `<host>:<port>`, where the host portion must be a valid hostname or IP address.
 	// +optional
 	Tcp *MonitoringCheckSpecSettingsTcp `json:"tcp,omitempty" tf:"tcp"`
+	// Settings for traceroute check. The target must be a valid hostname or IP address
+	// +optional
+	Traceroute *MonitoringCheckSpecSettingsTraceroute `json:"traceroute,omitempty" tf:"traceroute"`
 }
 
 type MonitoringCheckSpec struct {
@@ -317,7 +332,7 @@ type MonitoringCheckSpecResource struct {
 	Labels *map[string]string `json:"labels,omitempty" tf:"labels"`
 	// List of probe location IDs where this target will be checked from.
 	Probes []int64 `json:"probes" tf:"probes"`
-	// Check settings.
+	// Check settings. Should contain exactly one nested block.
 	Settings *MonitoringCheckSpecSettings `json:"settings" tf:"settings"`
 	// Hostname to ping.
 	Target *string `json:"target" tf:"target"`

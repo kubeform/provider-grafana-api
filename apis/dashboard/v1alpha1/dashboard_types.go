@@ -66,6 +66,9 @@ type DashboardSpecResource struct {
 	// The id of the folder to save the dashboard in.
 	// +optional
 	Folder *int64 `json:"folder,omitempty" tf:"folder"`
+	// Set a commit message for the version history.
+	// +optional
+	Message *string `json:"message,omitempty" tf:"message"`
 	// Set to true if you want to overwrite existing dashboard with newer version, same dashboard title in folder or same dashboard uid.
 	// +optional
 	Overwrite *bool `json:"overwrite,omitempty" tf:"overwrite"`
